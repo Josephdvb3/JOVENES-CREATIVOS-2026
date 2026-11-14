@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URBAN VIBE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: banda negra con logo, hero corto, catálogo en cuadrícula y carrito en una tarjeta aparte. Negro y dorado de la marca. */
+:root {
+  --bg: #f4f4f2;
+  --surface: #ffffff;
+  --fg: #181818;
+  --muted: #6a6a66;
+  --line: #dcdcd7;
+  --accent: #e5b13d;
+  --accent-ink: #151515;
+  --band: #111111;
+  --band-fg: #ffffff;
+  --tile: #ececE8;
+  --danger: #b3261e;
+  --font-display: "Space Grotesk", "Arial Narrow", Arial, sans-serif;
+  --font-body: "Inter", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e0e0e; --surface: #1a1a19; --fg: #f1f1ee; --muted: #a2a29c; --line: #333330;
+    --band: #000000; --tile: #262624; --danger: #ff8a80; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e0e0e; --surface: #1a1a19; --fg: #f1f1ee; --muted: #a2a29c; --line: #333330;
+  --band: #000000; --tile: #262624; --danger: #ff8a80; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--band); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.1; }
+button, select, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap > .in { max-width: 1120px; margin: 0 auto; }
+
+/* Cabecera */
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--band); color: var(--band-fg); }
+header .in { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding-block: 14px; }
+.logo { font-family: var(--font-display); font-weight: 700; font-size: 24px; letter-spacing: 0.22em; }
+nav { display: flex; gap: 20px; align-items: center; }
+nav a { color: var(--band-fg); text-decoration: none; font-size: 15px; }
+nav a:hover { color: var(--accent); }
+.badge { display: inline-block; min-width: 22px; padding: 1px 7px; margin-left: 4px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-size: 13px; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* Hero */
+.hero { background: linear-gradient(120deg, #151515, #4a4a47); color: #fff; }
+.hero .in { padding-block: 64px; }
+.hero h1 { font-size: clamp(36px, 7vw, 64px); letter-spacing: 0.02em; margin-bottom: 12px; }
+.hero p { color: #d8d8d4; max-width: 46ch; margin-bottom: 24px; }
+.btn { display: inline-block; background: var(--accent); color: var(--accent-ink); border: 0; padding: 13px 24px; border-radius: 6px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.btn:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; color: var(--fg); border: 1px solid var(--fg); }
+.btn.ghost:hover { background: var(--fg); color: var(--bg); filter: none; }
+.btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
+
+section { padding-block: 48px; }
+h2 { font-size: 28px; letter-spacing: 0.06em; margin-bottom: 24px; }
+
+/* Catálogo */
+.tools { display: flex; flex-direction: column; gap: 16px; align-items: center; margin-bottom: 28px; }
+.search { width: 100%; max-width: 420px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.filters { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.filters button { padding: 9px 18px; border: 1px solid var(--fg); background: transparent; border-radius: 6px; cursor: pointer; }
+.filters button:hover { background: var(--tile); }
+.filters button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.count { color: var(--muted); font-size: 14px; }
+
+.products { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 22px; }
+.card { background: var(--surface); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--line); }
+.card .pic { aspect-ratio: 1 / 1; background: var(--tile); display: grid; place-items: center; }
+.card .pic img, .card .pic svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card .body { padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.card h3 { font-size: 18px; }
+.cat { color: var(--muted); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+.price { font-family: var(--font-display); font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums; }
+.row { display: flex; gap: 8px; margin-top: auto; }
+.row select { flex: 0 0 auto; padding: 10px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.row .add { flex: 1; background: var(--fg); color: var(--bg); border: 0; border-radius: 6px; padding: 10px 12px; font-weight: 600; cursor: pointer; }
+.row .add:hover { background: var(--accent); color: var(--accent-ink); }
+.empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 30px 0; }
+
+/* Carrito */
+.cart { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; max-width: 720px; margin: 0 auto; padding: 22px; }
+.cart-empty { color: var(--muted); padding: 8px 0; }
+.item { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.item .mini { width: 56px; height: 56px; border-radius: 8px; overflow: hidden; background: var(--tile); }
+.item .mini svg, .item .mini img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.item .name { font-weight: 600; }
+.item .meta { color: var(--muted); font-size: 14px; }
+.item .side { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 6px; }
+.qty button { width: 32px; height: 32px; border: 0; background: transparent; cursor: pointer; font-size: 18px; line-height: 1; }
+.qty button:hover { background: var(--tile); }
+.qty span { min-width: 28px; text-align: center; font-variant-numeric: tabular-nums; }
+.line { font-weight: 600; font-variant-numeric: tabular-nums; }
+.remove { background: none; border: 0; color: var(--danger); cursor: pointer; font-size: 13px; padding: 0; text-decoration: underline; }
+.total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 18px; font-family: var(--font-display); font-size: 24px; }
+.total strong { font-variant-numeric: tabular-nums; }
+.pay { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.pay .btn { flex: 1 1 200px; text-align: center; }
+.pay .link { flex: 0 0 auto; background: none; border: 0; color: var(--muted); text-decoration: underline; cursor: pointer; padding: 13px 4px; }
+.note { margin-top: 12px; color: var(--muted); font-size: 13px; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-top: 18px; }
+.field label { font-size: 14px; color: var(--muted); }
+.field input { padding: 11px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+
+footer { background: var(--band); color: var(--band-fg); text-align: center; }
+footer .in { padding-block: 32px; display: flex; flex-direction: column; gap: 4px; }
+footer h3 { letter-spacing: 0.2em; margin-bottom: 4px; }
+footer p { color: #b9b9b4; font-size: 14px; }
+
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 40; max-width: calc(100% - 32px); }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 600px) {
+  header .in { justify-content: center; }
+  .hero .in { padding-block: 44px; }
+  .item { grid-template-columns: 48px 1fr; }
+  .item .mini { width: 48px; height: 48px; }
+  .item .side { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; align-items: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .toast { transition: none; }
+}
+</style>
+
+</head>
+<body>
+
+<header class="wrap">
+  <div class="in">
+    <div class="logo">URBAN VIBE</div>
+    <nav aria-label="Principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#productos">Productos</a>
+      <a href="#carrito">Carrito <span class="badge" id="contador">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero wrap" id="inicio">
+  <div class="in">
+    <h1>VISTE TU ESTILO</h1>
+    <p>Encuentra tu personalidad en cada prenda. Camisetas, pantalones y sudaderas para todos los días.</p>
+    <a class="btn" href="#productos">Comprar ahora</a>
+  </div>
+</div>
+
+<section class="wrap" id="productos">
+  <div class="in">
+    <h2>NUESTROS PRODUCTOS</h2>
+    <div class="tools">
+      <input class="search" type="search" id="buscador" placeholder="Buscar una prenda..." aria-label="Buscar una prenda">
+      <div class="filters" id="filtros" role="group" aria-label="Categorías"></div>
+      <div class="count" id="resultados" aria-live="polite"></div>
+    </div>
+    <div class="products" id="listaProductos"></div>
+  </div>
+</section>
+
+<section class="wrap" id="carrito">
+  <div class="in">
+    <h2>MI CARRITO DE COMPRAS</h2>
+    <div class="cart">
+      <div id="contenidoCarrito"></div>
+      <div class="total"><span>Total</span><strong id="total">$0</strong></div>
+      <div class="field">
+        <label for="nombre">Tu nombre (opcional, va en el mensaje del pedido)</label>
+        <input id="nombre" type="text" autocomplete="name" placeholder="Ej: Laura">
+      </div>
+      <div class="pay">
+        <a class="btn" id="btnWhatsapp" href="#carrito" target="_blank" rel="noopener" aria-disabled="true">Finalizar compra por WhatsApp</a>
+        <button class="btn ghost" id="btnCopiar" type="button">Copiar pedido</button>
+        <button class="link" id="btnVaciar" type="button">Vaciar carrito</button>
+      </div>
+      <p class="note">El pedido se envía por WhatsApp y el pago se acuerda por ese chat. Precios en pesos colombianos (COP).</p>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="in">
+    <h3>URBAN VIBE</h3>
+    <p>Tu estilo, tu identidad.</p>
+    <p>Proyecto Jóvenes Creativos</p>
+    <p>Desarrollado por Joseph Valdés y Matías Gil</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+// ====== Configuración (cámbiala aquí) ======
+const WHATSAPP = "573044238173"; // número de la tienda: código de país + número, sin + ni espacios
+// Cada producto usa su link de "foto" si existe. Si el link está vacío o no carga, se muestra un dibujo de la prenda.
+const CLAVE = "urbanvibe-carrito";
+
+const productos = [
+  { id: 1, nombre: "Camiseta Urbana",  categoria: "Camisetas",  precio: 45000,  color: "#e5b13d", foto: "camiseta-urbana.jpg" },
+  { id: 2, nombre: "Camiseta Básica",  categoria: "Camisetas",  precio: 35000,  color: "#8c8c88", foto: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=500" },
+  { id: 3, nombre: "Pantalón Casual",  categoria: "Pantalones", precio: 85000,  color: "#6f7d68", foto: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500" },
+  { id: 4, nombre: "Sudadera Moderna", categoria: "Sudaderas",  precio: 95000,  color: "#c9573a", foto: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500" },
+  { id: 5, nombre: "Pantalón Jeans",   categoria: "Pantalones", precio: 100000, color: "#3f5f8a", foto: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500" },
+  { id: 6, nombre: "Sudadera Casual",  categoria: "Sudaderas",  precio: 110000, color: "#4a4a47", foto: "https://images.unsplash.com/photo-1578681994506-b8f463449011?w=500" }
+];
+const categorias = ["Todos", "Camisetas", "Pantalones", "Sudaderas"];
+const tallas = {
+  Camisetas: ["S", "M", "L", "XL"],
+  Sudaderas: ["S", "M", "L", "XL"],
+  Pantalones: ["28", "30", "32", "34"]
+};
+
+let categoriaActual = "Todos";
+let carrito = cargarCarrito();
+
+const $ = id => document.getElementById(id);
+const dinero = n => "$" + n.toLocaleString("es-CO");
+
+// ====== Dibujo de prendas (se usa si no hay foto) ======
+function dibujo(p) {
+  const formas = {
+    Camisetas: '<path d="M70 38 L36 54 L14 92 L46 106 L58 90 L58 172 L142 172 L142 90 L154 106 L186 92 L164 54 L130 38 Q100 62 70 38Z"/>',
+    Pantalones: '<path d="M62 24 H138 L152 178 H112 L100 86 L88 178 H48 Z"/><rect x="62" y="24" width="76" height="12" fill="rgba(0,0,0,.22)"/>',
+    Sudaderas: '<path d="M72 40 Q100 66 128 40 L164 56 L188 128 L158 138 L148 104 L148 174 H52 V104 L42 138 L12 128 L36 56 Z"/><path d="M72 40 Q100 78 128 40 Q100 24 72 40Z" fill="rgba(0,0,0,.25)"/><rect x="78" y="128" width="44" height="26" rx="4" fill="rgba(0,0,0,.18)"/>'
+  };
+  return '<svg viewBox="0 0 200 200" role="img" aria-label="' + p.nombre + '"><rect width="200" height="200" fill="rgba(128,128,120,.10)"/><g fill="' + p.color + '">' + formas[p.categoria] + '</g></svg>';
+}
+function imagen(p) {
+  if (!p.foto) return dibujo(p);
+  return '<img src="' + p.foto + '" alt="' + p.nombre + '" loading="lazy" onerror="this.outerHTML=dibujoPorId(' + p.id + ')">';
+}
+function dibujoPorId(id) { return dibujo(productos.find(p => p.id === id)); }
+
+// ====== Catálogo ======
+function pintarFiltros() {
+  $("filtros").innerHTML = categorias.map(c =>
+    '<button type="button" data-cat="' + c + '" aria-pressed="' + (c === categoriaActual) + '">' + c + '</button>'
+  ).join("");
+}
+
+function mostrarProductos() {
+  const q = $("buscador").value.trim().toLowerCase();
+  const lista = productos.filter(p =>
+    (categoriaActual === "Todos" || p.categoria === categoriaActual) &&
+    p.nombre.toLowerCase().includes(q)
+  );
+  $("listaProductos").innerHTML = lista.length
+    ? lista.map(p => (
+      '<article class="card">' +
+        '<div class="pic">' + imagen(p) + '</div>' +
+        '<div class="body">' +
+          '<span class="cat">' + p.categoria + '</span>' +
+          '<h3>' + p.nombre + '</h3>' +
+          '<p class="price">' + dinero(p.precio) + '</p>' +
+          '<div class="row">' +
+            '<select id="talla-' + p.id + '" aria-label="Talla de ' + p.nombre + '">' +
+              tallas[p.categoria].map(t => '<option>' + t + '</option>').join("") +
+            '</select>' +
+            '<button class="add" type="button" data-add="' + p.id + '">Agregar</button>' +
+          '</div>' +
+        '</div>' +
+      '</article>'
+    )).join("")
+    : '<p class="empty">No encontramos productos con esa búsqueda.</p>';
+  $("resultados").textContent = lista.length + (lista.length === 1 ? " prenda" : " prendas");
+}
+
+// ====== Carrito ======
+function cargarCarrito() {
+  try {
+    const guardado = JSON.parse(localStorage.getItem(CLAVE) || "[]");
+    return guardado.filter(i => productos.some(p => p.id === i.id) && i.cantidad > 0);
+  } catch (e) { return []; }
+}
+function guardarCarrito() {
+  try { localStorage.setItem(CLAVE, JSON.stringify(carrito)); } catch (e) { /* sin almacenamiento */ }
+}
+
+function agregar(id, talla) {
+  const existente = carrito.find(i => i.id === id && i.talla === talla);
+  if (existente) existente.cantidad++;
+  else carrito.push({ id, talla, cantidad: 1 });
+  guardarCarrito();
+  mostrarCarrito();
+  const p = productos.find(x => x.id === id);
+  avisar(p.nombre + " (" + talla + ") agregada al carrito");
+}
+function cambiarCantidad(id, talla, delta) {
+  const item = carrito.find(i => i.id === id && i.talla === talla);
+  if (!item) return;
+  item.cantidad += delta;
+  if (item.cantidad <= 0) carrito = carrito.filter(i => i !== item);
+  guardarCarrito();
+  mostrarCarrito();
+}
+function eliminar(id, talla) {
+  carrito = carrito.filter(i => !(i.id === id && i.talla === talla));
+  guardarCarrito();
+  mostrarCarrito();
+}
+
+function totalCarrito() {
+  return carrito.reduce((s, i) => s + productos.find(p => p.id === i.id).precio * i.cantidad, 0);
+}
+
+function textoPedido() {
+  const nombre = $("nombre").value.trim();
+  const lineas = carrito.map(i => {
+    const p = productos.find(x => x.id === i.id);
+    return "- " + i.cantidad + " x " + p.nombre + " (talla " + i.talla + "): " + dinero(p.precio * i.cantidad);
+  });
+  return "Hola URBAN VIBE, " + (nombre ? "soy " + nombre + " y " : "") + "quiero hacer este pedido:\n" +
+    lineas.join("\n") + "\nTotal: " + dinero(totalCarrito());
+}
+
+function mostrarCarrito() {
+  const vacio = carrito.length === 0;
+  $("contenidoCarrito").innerHTML = vacio
+    ? '<p class="cart-empty">Tu carrito está vacío. Agrega una prenda desde el catálogo.</p>'
+    : carrito.map(i => {
+        const p = productos.find(x => x.id === i.id);
+        return '<div class="item">' +
+          '<div class="mini">' + imagen(p) + '</div>' +
+          '<div><div class="name">' + p.nombre + '</div><div class="meta">Talla ' + i.talla + ' · ' + dinero(p.precio) + ' c/u</div></div>' +
+          '<div class="side">' +
+            '<div class="qty" role="group" aria-label="Cantidad de ' + p.nombre + '">' +
+              '<button type="button" data-menos="' + i.id + '" data-talla="' + i.talla + '" aria-label="Quitar una unidad">−</button>' +
+              '<span>' + i.cantidad + '</span>' +
+              '<button type="button" data-mas="' + i.id + '" data-talla="' + i.talla + '" aria-label="Agregar una unidad">+</button>' +
+            '</div>' +
+            '<span class="line">' + dinero(p.precio * i.cantidad) + '</span>' +
+            '<button class="remove" type="button" data-quitar="' + i.id + '" data-talla="' + i.talla + '">Quitar</button>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+
+  $("total").textContent = dinero(totalCarrito());
+  $("contador").textContent = carrito.reduce((s, i) => s + i.cantidad, 0);
+  $("btnVaciar").hidden = vacio;
+  $("btnCopiar").hidden = vacio;
+  actualizarEnlace();
+}
+
+function actualizarEnlace() {
+  const a = $("btnWhatsapp");
+  if (carrito.length === 0) {
+    a.setAttribute("aria-disabled", "true");
+    a.href = "#carrito";
+  } else {
+    a.removeAttribute("aria-disabled");
+    a.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(textoPedido());
+  }
+}
+
+// ====== Avisos ======
+let temporizador;
+function avisar(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(temporizador);
+  temporizador = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+// ====== Eventos ======
+$("buscador").addEventListener("input", mostrarProductos);
+$("nombre").addEventListener("input", actualizarEnlace);
+
+$("filtros").addEventListener("click", e => {
+  const b = e.target.closest("[data-cat]");
+  if (!b) return;
+  categoriaActual = b.dataset.cat;
+  pintarFiltros();
+  mostrarProductos();
+});
+
+$("listaProductos").addEventListener("click", e => {
+  const b = e.target.closest("[data-add]");
+  if (!b) return;
+  const id = Number(b.dataset.add);
+  agregar(id, $("talla-" + id).value);
+});
+
+$("contenidoCarrito").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  const talla = b.dataset.talla;
+  if (b.dataset.mas) cambiarCantidad(Number(b.dataset.mas), talla, 1);
+  else if (b.dataset.menos) cambiarCantidad(Number(b.dataset.menos), talla, -1);
+  else if (b.dataset.quitar) eliminar(Number(b.dataset.quitar), talla);
+});
+
+$("btnVaciar").addEventListener("click", () => {
+  carrito = [];
+  guardarCarrito();
+  mostrarCarrito();
+  avisar("Carrito vaciado");
+});
+
+$("btnCopiar").addEventListener("click", async () => {
+  const texto = textoPedido();
+  try {
+    await navigator.clipboard.writeText(texto);
+    avisar("Pedido copiado");
+  } catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = texto;
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+    ta.remove();
+    avisar(ok ? "Pedido copiado" : "No se pudo copiar, selecciona el texto manualmente");
+  }
+});
+
+pintarFiltros();
+mostrarProductos();
+mostrarCarrito();
+</script>
+
+</body>
+</html>
